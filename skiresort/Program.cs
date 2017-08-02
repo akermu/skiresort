@@ -57,6 +57,7 @@ namespace skiresort
 
             var longest = routes.Where(route => route.Count() == max).ToList();
             max = Int32.MinValue;
+            Route best = null;
             foreach (var route in longest)
             {
                 var start = route.First();
@@ -65,19 +66,11 @@ namespace skiresort
                 if (diff > max)
                 {
                     max = diff;
+                    best = route;
                 }
             }
 
-            var best = longest.Where(route =>
-                {
-                    var start = route.First();
-                    var end = route.Last();
-                    var diff = map[start.x, start.y] - map[end.x, end.y];
-                    return diff == max;
-                }
-            ).ToList();
-
-            return best.First();
+            return best;
         }
 
         static int[,] ParseFile(IEnumerator<string> lines)
